@@ -14,7 +14,8 @@ app.use(express.json());
 app.use(cookieParser())
 app.use(cors({
     origin:"https://e-commerce-tau-one-37.vercel.app",
-    credentials:true
+    credentials:true,
+    allowedHeaders: ["Content-Type", "Authorization"],
 }))
 
 app.get("/", (req,res) => {
