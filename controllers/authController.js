@@ -33,7 +33,7 @@ export const signup = async (req, res) => {
       password: hashedPassword,
       name,
       verificationToken,
-      verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 100,
+      verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000,
     });
 
     await user.save();
@@ -104,7 +104,7 @@ export const login = async (req, res) => {
     });
 
     if (!user) {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: "Invalid credentials",
       });
@@ -141,10 +141,15 @@ export const login = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  res.clearCookie("token");
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "None",
+  });
+
   res.status(200).json({
     success: true,
-    message: "Logged out successsfully",
+    message: "Logged out successfully",
   });
 };
 
