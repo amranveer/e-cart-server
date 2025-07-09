@@ -143,8 +143,8 @@ export const login = async (req, res) => {
 export const logout = (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "None",
+    secure: process.env.NODE_ENV === "production" ? true : false,
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
   });
 
   res.status(200).json({
@@ -152,6 +152,7 @@ export const logout = (req, res) => {
     message: "Logged out successfully",
   });
 };
+
 
 export const forgotPassword = async (req, res) => {
   const { email } = req.body;
